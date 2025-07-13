@@ -1,8 +1,21 @@
 import axios from 'axios';
 import type { Note } from '../../types/note';
 
+// Перевірте, чи визначена змінна середовища. Якщо ні, використовуйте запасний варіант або викличте помилку.
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+if (!API_BASE_URL) {
+  // Ви можете викинути помилку, щоб розробка не могла тривати з неправильною конфігурацією.
+  // Або надати URL за замовчуванням для локальної розробки.
+  // throw new Error('NEXT_PUBLIC_API_URL is not defined in environment variables.');
+  console.warn('NEXT_PUBLIC_API_URL is not defined. Using a fallback URL for development.');
+  // Для розробки можна використовувати localhost:
+  // API_BASE_URL = 'http://localhost:3000'; // Розкоментуйте це, якщо вам потрібен локальний запасний варіант
+  // Або викинути помилку, щоб переконатися, що вона встановлена в продакшені.
+}
+
 export const nextServer = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
+  baseURL: `${API_BASE_URL}/api`,
   withCredentials: true,
 });
 
